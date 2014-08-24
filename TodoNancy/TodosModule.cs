@@ -8,7 +8,7 @@
     {
         public TodosModule(IDataStore todoStore): base("todos")
         {
-            Get["/"] = _ => Response.AsJson(todoStore.GetAll());
+            Get["/"] = _ => todoStore.GetAll();
 
             Post["/"] = _ =>
             {
@@ -19,7 +19,7 @@
                 if (!todoStore.TryAdd(newTodo))
                     return HttpStatusCode.NotAcceptable;
 
-                return Response.AsJson(newTodo)
+                return Negotiate.WithModel(newTodo)
                                .WithStatusCode(HttpStatusCode.Created);
             };
 

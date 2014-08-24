@@ -8,14 +8,13 @@
 
     public class MongoDataStore : IDataStore
     {
-        private MongoClient mongoClient;
-        private MongoCollection<Todo> todos;
+        private MongoDatabase database;
+        private MongoCollection<BsonDocument> todos;
 
         public MongoDataStore(string connectionString)
         {
-            mongoClient = new MongoClient(connectionString);
-            var database = mongoClient.GetServer().GetDatabase("todos");
-            todos = database.GetCollection<Todo>("todos");
+            database = MongoDatabase.Create(connectionString);
+            todos = database.GetCollection("todos");
         }
 
         public long Count { get { return todos.FindAll().Count(); } }
@@ -39,14 +38,13 @@
             if (FindById(id) == null)
                 return false;
 
-            todos.Remove(Query<Todo>.EQ(e => e.id, id));
+            todos.Remove(Query.EQ("_id", id));
             return true;
         }
 
-        private Todo FindById(long id)
+        private BsonDocument FindById(long id)
         {
-            var query = Query<Todo>.EQ(e => e.id, id);
-            return todos.FindOne(query);
+            return todos.Find(Query.EQ("_id", id)).FirstOrDefault();
         }
 
         public bool TryUpdate(Todo todo)
