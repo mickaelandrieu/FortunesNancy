@@ -7,6 +7,4 @@
         public string author { get; set; }
         public int votes { get; set; }
     }
-
-    
 }
