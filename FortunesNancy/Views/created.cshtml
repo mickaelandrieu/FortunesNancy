@@ -1,0 +1,19 @@
+﻿@inherits Nancy.ViewEngines.Razor.NancyRazorViewBase<FortunesNancy.Fortune>
+
+    <!DOCTYPE HTML>
+
+    <html>
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <title>Successfuly created a new Todo</title>
+    </head>
+    <body>
+        <div>
+            <ul>
+                <li>@Model.id</li>
+                <li>@Model.quote</li>
+                <li>@Model.author</li>
+            </ul>
+        </div>
+    </body>
+</html>
